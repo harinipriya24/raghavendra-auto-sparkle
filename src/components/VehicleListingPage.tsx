@@ -20,7 +20,7 @@ type Props = {
 };
 
 const PHONE = "9908459309";
-const WHATSAPP = "919908459309";
+const WHATSAPP_URL = "https://wa.me/919908459309";
 
 export function VehicleListingPage({ title, eyebrow, intro, vehicles }: Props) {
   const [query, setQuery] = useState("");
@@ -246,7 +246,7 @@ function Select({
 
 function VehicleCard({ v }: { v: Vehicle }) {
   const enquiryText = `Hi, I'm interested in the ${v.name} (${formatINR(v.price)}). Please share more details.`;
-  const whatsappUrl = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(enquiryText)}`;
+  const whatsappUrl = WHATSAPP_URL;
   const mailtoUrl = `mailto:srinu9908459@gmail.com?subject=${encodeURIComponent(
     `Enquiry: ${v.name}`,
   )}&body=${encodeURIComponent(enquiryText)}`;
