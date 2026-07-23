@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Phone,
   Mail,
@@ -12,6 +12,7 @@ import {
   Users,
   ArrowRight,
 } from "lucide-react";
+import type { LinkProps } from "@tanstack/react-router";
 import heroImg from "@/assets/hero-vehicles.jpg";
 
 export const Route = createFileRoute("/")({
@@ -37,16 +38,25 @@ export const Route = createFileRoute("/")({
   }),
 });
 
-const services = [
+type Service = {
+  icon: typeof Car;
+  title: string;
+  desc: string;
+  to?: LinkProps["to"];
+};
+
+const services: Service[] = [
   {
     icon: Car,
     title: "Auto Rickshaw Sales",
     desc: "Buy and sell quality auto rickshaws with confidence and clear paperwork.",
+    to: "/auto-rickshaw-sales",
   },
   {
     icon: Car,
     title: "Car Sales",
     desc: "Curated pre-owned cars, inspected and priced fairly for local buyers.",
+    to: "/car-sales",
   },
   {
     icon: ArrowRightLeft,
@@ -195,20 +205,40 @@ function Index() {
           </div>
 
           <div className="grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((s) => (
-              <div
-                key={s.title}
-                className="group flex flex-col gap-4 bg-card p-8 transition hover:bg-card/70"
-              >
-                <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <s.icon className="h-5 w-5" />
+            {services.map((s) => {
+              const content = (
+                <>
+                  <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <s.icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="text-lg font-semibold tracking-tight">{s.title}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {s.desc}
+                  </p>
+                  {s.to && (
+                    <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-primary">
+                      View inventory <ArrowRight className="h-3.5 w-3.5" />
+                    </span>
+                  )}
+                </>
+              );
+              return s.to ? (
+                <Link
+                  key={s.title}
+                  to={s.to}
+                  className="group flex flex-col gap-4 bg-card p-8 text-left transition hover:bg-card/70"
+                >
+                  {content}
+                </Link>
+              ) : (
+                <div
+                  key={s.title}
+                  className="group flex flex-col gap-4 bg-card p-8 transition hover:bg-card/70"
+                >
+                  {content}
                 </div>
-                <h3 className="text-lg font-semibold tracking-tight">{s.title}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {s.desc}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
