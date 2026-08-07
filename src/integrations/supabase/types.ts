@@ -14,16 +14,208 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      enquiries: {
+        Row: {
+          admin_notes: string | null
+          city: string | null
+          created_at: string
+          email: string | null
+          employment_type: string | null
+          id: string
+          kind: Database["public"]["Enums"]["enquiry_kind"]
+          loan_amount: number | null
+          message: string | null
+          monthly_income: number | null
+          name: string
+          phone: string
+          preferred_date: string | null
+          status: string
+          updated_at: string
+          vehicle_id: string | null
+          vehicle_name: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string | null
+          employment_type?: string | null
+          id?: string
+          kind?: Database["public"]["Enums"]["enquiry_kind"]
+          loan_amount?: number | null
+          message?: string | null
+          monthly_income?: number | null
+          name: string
+          phone: string
+          preferred_date?: string | null
+          status?: string
+          updated_at?: string
+          vehicle_id?: string | null
+          vehicle_name?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string | null
+          employment_type?: string | null
+          id?: string
+          kind?: Database["public"]["Enums"]["enquiry_kind"]
+          loan_amount?: number | null
+          message?: string | null
+          monthly_income?: number | null
+          name?: string
+          phone?: string
+          preferred_date?: string | null
+          status?: string
+          updated_at?: string
+          vehicle_id?: string | null
+          vehicle_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enquiries_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reviews: {
+        Row: {
+          approved: boolean
+          city: string | null
+          comment: string
+          created_at: string
+          id: string
+          name: string
+          rating: number
+        }
+        Insert: {
+          approved?: boolean
+          city?: string | null
+          comment: string
+          created_at?: string
+          id?: string
+          name: string
+          rating?: number
+        }
+        Update: {
+          approved?: boolean
+          city?: string | null
+          comment?: string
+          created_at?: string
+          id?: string
+          name?: string
+          rating?: number
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vehicles: {
+        Row: {
+          brand: string
+          category: Database["public"]["Enums"]["vehicle_category"]
+          colors: string[]
+          created_at: string
+          description: string
+          engine: string
+          featured: boolean
+          fuel: string
+          id: string
+          images: string[]
+          in_stock: boolean
+          km_driven: number | null
+          name: string
+          price: number
+          seating: number
+          sort_order: number
+          transmission: string
+          updated_at: string
+          year: number | null
+        }
+        Insert: {
+          brand: string
+          category: Database["public"]["Enums"]["vehicle_category"]
+          colors?: string[]
+          created_at?: string
+          description?: string
+          engine?: string
+          featured?: boolean
+          fuel?: string
+          id?: string
+          images?: string[]
+          in_stock?: boolean
+          km_driven?: number | null
+          name: string
+          price?: number
+          seating?: number
+          sort_order?: number
+          transmission?: string
+          updated_at?: string
+          year?: number | null
+        }
+        Update: {
+          brand?: string
+          category?: Database["public"]["Enums"]["vehicle_category"]
+          colors?: string[]
+          created_at?: string
+          description?: string
+          engine?: string
+          featured?: boolean
+          fuel?: string
+          id?: string
+          images?: string[]
+          in_stock?: boolean
+          km_driven?: number | null
+          name?: string
+          price?: number
+          seating?: number
+          sort_order?: number
+          transmission?: string
+          updated_at?: string
+          year?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      enquiry_kind: "enquiry" | "booking" | "finance"
+      vehicle_category: "auto" | "car"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +342,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      enquiry_kind: ["enquiry", "booking", "finance"],
+      vehicle_category: ["auto", "car"],
+    },
   },
 } as const
