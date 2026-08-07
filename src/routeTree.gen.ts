@@ -13,6 +13,7 @@ import { Route as FinanceRouteImport } from './routes/finance'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CarSalesRouteImport } from './routes/car-sales'
 import { Route as AutoRickshawSalesRouteImport } from './routes/auto-rickshaw-sales'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VehiclesVehicleIdRouteImport } from './routes/vehicles.$vehicleId'
 
@@ -36,6 +37,11 @@ const AutoRickshawSalesRoute = AutoRickshawSalesRouteImport.update({
   path: '/auto-rickshaw-sales',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -49,6 +55,7 @@ const VehiclesVehicleIdRoute = VehiclesVehicleIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/auto-rickshaw-sales': typeof AutoRickshawSalesRoute
   '/car-sales': typeof CarSalesRoute
   '/compare': typeof CompareRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/auto-rickshaw-sales': typeof AutoRickshawSalesRoute
   '/car-sales': typeof CarSalesRoute
   '/compare': typeof CompareRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/auto-rickshaw-sales': typeof AutoRickshawSalesRoute
   '/car-sales': typeof CarSalesRoute
   '/compare': typeof CompareRoute
@@ -76,6 +85,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/auto-rickshaw-sales'
     | '/car-sales'
     | '/compare'
@@ -84,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/auto-rickshaw-sales'
     | '/car-sales'
     | '/compare'
@@ -92,6 +103,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/auth'
     | '/auto-rickshaw-sales'
     | '/car-sales'
     | '/compare'
@@ -101,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   AutoRickshawSalesRoute: typeof AutoRickshawSalesRoute
   CarSalesRoute: typeof CarSalesRoute
   CompareRoute: typeof CompareRoute
@@ -138,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AutoRickshawSalesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -157,6 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   AutoRickshawSalesRoute: AutoRickshawSalesRoute,
   CarSalesRoute: CarSalesRoute,
   CompareRoute: CompareRoute,
