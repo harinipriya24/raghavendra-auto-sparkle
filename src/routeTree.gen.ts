@@ -9,10 +9,23 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as FinanceRouteImport } from './routes/finance'
+import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CarSalesRouteImport } from './routes/car-sales'
 import { Route as AutoRickshawSalesRouteImport } from './routes/auto-rickshaw-sales'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VehiclesVehicleIdRouteImport } from './routes/vehicles.$vehicleId'
 
+const FinanceRoute = FinanceRouteImport.update({
+  id: '/finance',
+  path: '/finance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CarSalesRoute = CarSalesRouteImport.update({
   id: '/car-sales',
   path: '/car-sales',
@@ -28,39 +41,89 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VehiclesVehicleIdRoute = VehiclesVehicleIdRouteImport.update({
+  id: '/vehicles/$vehicleId',
+  path: '/vehicles/$vehicleId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auto-rickshaw-sales': typeof AutoRickshawSalesRoute
   '/car-sales': typeof CarSalesRoute
+  '/compare': typeof CompareRoute
+  '/finance': typeof FinanceRoute
+  '/vehicles/$vehicleId': typeof VehiclesVehicleIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auto-rickshaw-sales': typeof AutoRickshawSalesRoute
   '/car-sales': typeof CarSalesRoute
+  '/compare': typeof CompareRoute
+  '/finance': typeof FinanceRoute
+  '/vehicles/$vehicleId': typeof VehiclesVehicleIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auto-rickshaw-sales': typeof AutoRickshawSalesRoute
   '/car-sales': typeof CarSalesRoute
+  '/compare': typeof CompareRoute
+  '/finance': typeof FinanceRoute
+  '/vehicles/$vehicleId': typeof VehiclesVehicleIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auto-rickshaw-sales' | '/car-sales'
+  fullPaths:
+    | '/'
+    | '/auto-rickshaw-sales'
+    | '/car-sales'
+    | '/compare'
+    | '/finance'
+    | '/vehicles/$vehicleId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auto-rickshaw-sales' | '/car-sales'
-  id: '__root__' | '/' | '/auto-rickshaw-sales' | '/car-sales'
+  to:
+    | '/'
+    | '/auto-rickshaw-sales'
+    | '/car-sales'
+    | '/compare'
+    | '/finance'
+    | '/vehicles/$vehicleId'
+  id:
+    | '__root__'
+    | '/'
+    | '/auto-rickshaw-sales'
+    | '/car-sales'
+    | '/compare'
+    | '/finance'
+    | '/vehicles/$vehicleId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AutoRickshawSalesRoute: typeof AutoRickshawSalesRoute
   CarSalesRoute: typeof CarSalesRoute
+  CompareRoute: typeof CompareRoute
+  FinanceRoute: typeof FinanceRoute
+  VehiclesVehicleIdRoute: typeof VehiclesVehicleIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/finance': {
+      id: '/finance'
+      path: '/finance'
+      fullPath: '/finance'
+      preLoaderRoute: typeof FinanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/car-sales': {
       id: '/car-sales'
       path: '/car-sales'
@@ -82,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/vehicles/$vehicleId': {
+      id: '/vehicles/$vehicleId'
+      path: '/vehicles/$vehicleId'
+      fullPath: '/vehicles/$vehicleId'
+      preLoaderRoute: typeof VehiclesVehicleIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,17 +159,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AutoRickshawSalesRoute: AutoRickshawSalesRoute,
   CarSalesRoute: CarSalesRoute,
+  CompareRoute: CompareRoute,
+  FinanceRoute: FinanceRoute,
+  VehiclesVehicleIdRoute: VehiclesVehicleIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
