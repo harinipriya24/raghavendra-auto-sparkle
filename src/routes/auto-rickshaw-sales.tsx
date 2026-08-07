@@ -1,35 +1,35 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { VehicleListingPage } from "@/components/VehicleListingPage";
-import { autoRickshaws } from "@/data/vehicles";
 
 export const Route = createFileRoute("/auto-rickshaw-sales")({
-  component: AutoRickshawSales,
+  component: AutoSales,
   head: () => ({
     meta: [
       { title: "Auto Rickshaw Sales in Jangaon — Raghavendra Auto Finance" },
       {
         name: "description",
         content:
-          "Buy and sell quality auto rickshaws in Jangaon. Browse petrol, diesel, CNG and electric autos with transparent documentation.",
+          "Buy and sell auto rickshaws in Jangaon, Telangana. CNG, diesel, petrol and electric autos with transparent pricing, documentation support and finance help.",
       },
       { property: "og:title", content: "Auto Rickshaw Sales — Raghavendra Auto Finance" },
       {
         property: "og:description",
         content:
-          "Curated auto rickshaws for sale in Jangaon — inspected, priced fairly, and ready to drive.",
+          "Browse auto rickshaws for sale in Jangaon with clear paperwork and finance against registered vehicle documents.",
       },
       { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
 });
 
-function AutoRickshawSales() {
+function AutoSales() {
   return (
     <VehicleListingPage
       eyebrow="Auto Rickshaw Sales"
-      title="Autos, inspected and ready to drive."
-      intro="Browse our latest auto rickshaws — petrol, diesel, CNG and electric — all with transparent paperwork and honest pricing."
-      vehicles={autoRickshaws}
+      title="Auto rickshaws built for daily earning."
+      intro="Passenger and cargo autos across CNG, diesel, petrol and electric. Every vehicle is checked, fairly priced and comes with complete documentation support."
+      category="auto"
     />
   );
 }
