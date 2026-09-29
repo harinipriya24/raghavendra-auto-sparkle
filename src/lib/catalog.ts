@@ -1,6 +1,11 @@
 import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
+import heroVehicles from "@/assets/hero-vehicles.jpg";
+import bajajAuto from "@/assets/bajaj-auto-rickshaw.jpg";
+import piaggioAuto from "@/assets/piaggio-auto-rickshaw.jpg";
+import electricAuto from "@/assets/electric-auto-rickshaw.jpg";
+import tvsAuto from "@/assets/tvs-auto-rickshaw.jpg";
 
 export type Vehicle = Database["public"]["Tables"]["vehicles"]["Row"];
 export type Review = Database["public"]["Tables"]["reviews"]["Row"];
@@ -8,11 +13,23 @@ export type Enquiry = Database["public"]["Tables"]["enquiries"]["Row"];
 export type VehicleCategory = Database["public"]["Enums"]["vehicle_category"];
 export type EnquiryKind = Database["public"]["Enums"]["enquiry_kind"];
 
-export const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1400&q=80";
+export const FALLBACK_IMAGE = heroVehicles;
+
+const replacementImages: Record<string, string> = {
+  "https://images.unsplash.com/photo-1580494767050-8b3a2f0e0b0f?auto=format&fit=crop&w=1400&q=80":
+    bajajAuto,
+  "https://images.unsplash.com/photo-1519055548599-6d4d129508c4?auto=format&fit=crop&w=1400&q=80":
+    piaggioAuto,
+  "https://images.unsplash.com/photo-1617196701539-e88ae67f0f6f?auto=format&fit=crop&w=1400&q=80":
+    electricAuto,
+  "https://images.unsplash.com/photo-1597007519071-c1a5aebc4a44?auto=format&fit=crop&w=1400&q=80":
+    tvsAuto,
+};
 
 export const vehicleImages = (v: Pick<Vehicle, "images">) =>
-  v.images && v.images.length > 0 ? v.images : [FALLBACK_IMAGE];
+  v.images && v.images.length > 0
+    ? v.images.map((image) => replacementImages[image] ?? image)
+    : [FALLBACK_IMAGE];
 
 export const vehiclesQuery = (category?: VehicleCategory) =>
   queryOptions({

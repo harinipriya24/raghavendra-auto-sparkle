@@ -27,6 +27,11 @@ export function VehicleCard({ v }: { v: Vehicle }) {
           src={image}
           alt={v.name}
           loading="lazy"
+          width={1200}
+          height={912}
+          onError={(event) => {
+            event.currentTarget.src = vehicleImages({ images: [] })[0];
+          }}
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
         <div className="absolute left-3 top-3 flex flex-col gap-2">

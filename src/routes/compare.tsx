@@ -93,6 +93,12 @@ function ComparePage() {
                         <img
                           src={vehicleImages(v)[0]}
                           alt={v.name}
+                          loading="lazy"
+                          width={1200}
+                          height={912}
+                          onError={(event) => {
+                            event.currentTarget.src = vehicleImages({ images: [] })[0];
+                          }}
                           className="aspect-[4/3] w-40 rounded-lg object-cover"
                         />
                         <Link
