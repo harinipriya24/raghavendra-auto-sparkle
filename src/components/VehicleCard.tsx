@@ -8,7 +8,7 @@ import {
   GitCompareArrows,
 } from "lucide-react";
 import { formatINR, PHONE_TEL, WHATSAPP_URL } from "@/lib/site";
-import { vehicleImages, type Vehicle } from "@/lib/catalog";
+import { FALLBACK_IMAGE, vehicleImages, type Vehicle } from "@/lib/catalog";
 import { useCompare } from "@/hooks/useCompare";
 
 export function VehicleCard({ v }: { v: Vehicle }) {
@@ -30,7 +30,7 @@ export function VehicleCard({ v }: { v: Vehicle }) {
           width={1200}
           height={912}
           onError={(event) => {
-            event.currentTarget.src = vehicleImages({ images: [] })[0];
+            event.currentTarget.src = FALLBACK_IMAGE;
           }}
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />

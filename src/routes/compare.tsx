@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { X, Phone, MessageCircle } from "lucide-react";
-import { vehiclesByIdsQuery, vehicleImages } from "@/lib/catalog";
+import { FALLBACK_IMAGE, vehiclesByIdsQuery, vehicleImages } from "@/lib/catalog";
 import { formatINR, PHONE_TEL, WHATSAPP_URL } from "@/lib/site";
 import { useCompare } from "@/hooks/useCompare";
 
@@ -97,7 +97,7 @@ function ComparePage() {
                           width={1200}
                           height={912}
                           onError={(event) => {
-                            event.currentTarget.src = vehicleImages({ images: [] })[0];
+                            event.currentTarget.src = FALLBACK_IMAGE;
                           }}
                           className="aspect-[4/3] w-40 rounded-lg object-cover"
                         />

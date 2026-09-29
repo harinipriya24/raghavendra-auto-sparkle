@@ -11,7 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { vehicleQuery, vehicleImages } from "@/lib/catalog";
+import { FALLBACK_IMAGE, vehicleQuery, vehicleImages } from "@/lib/catalog";
 import { formatINR, PHONE_TEL, WHATSAPP_URL } from "@/lib/site";
 import { EmiCalculator } from "@/components/EmiCalculator";
 import { EnquiryForm } from "@/components/EnquiryForm";
@@ -106,7 +106,7 @@ function VehicleDetails() {
                 width={1200}
                 height={912}
                 onError={(event) => {
-                  event.currentTarget.src = vehicleImages({ images: [] })[0];
+                  event.currentTarget.src = FALLBACK_IMAGE;
                 }}
                 className="h-full w-full object-cover"
               />
@@ -158,7 +158,7 @@ function VehicleDetails() {
                       width={1200}
                       height={912}
                       onError={(event) => {
-                        event.currentTarget.src = vehicleImages({ images: [] })[0];
+                        event.currentTarget.src = FALLBACK_IMAGE;
                       }}
                       className="h-full w-full object-cover"
                     />
