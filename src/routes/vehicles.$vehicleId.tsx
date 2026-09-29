@@ -11,7 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { vehicleQuery, vehicleImages } from "@/lib/catalog";
+import { FALLBACK_IMAGE, vehicleQuery, vehicleImages } from "@/lib/catalog";
 import { formatINR, PHONE_TEL, WHATSAPP_URL } from "@/lib/site";
 import { EmiCalculator } from "@/components/EmiCalculator";
 import { EnquiryForm } from "@/components/EnquiryForm";
@@ -100,7 +100,16 @@ function VehicleDetails() {
           {/* GALLERY */}
           <div>
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-border bg-secondary">
-              <img src={images[index]} alt={v.name} className="h-full w-full object-cover" />
+              <img
+                src={images[index]}
+                alt={v.name}
+                width={1200}
+                height={912}
+                onError={(event) => {
+                  event.currentTarget.src = FALLBACK_IMAGE;
+                }}
+                className="h-full w-full object-cover"
+              />
               {images.length > 1 && (
                 <>
                   <button
@@ -142,7 +151,17 @@ function VehicleDetails() {
                       i === index ? "border-primary" : "border-border opacity-70 hover:opacity-100"
                     }`}
                   >
-                    <img src={img} alt={`${v.name} photo ${i + 1}`} className="h-full w-full object-cover" />
+                    <img
+                      src={img}
+                      alt={`${v.name} photo ${i + 1}`}
+                      loading="lazy"
+                      width={1200}
+                      height={912}
+                      onError={(event) => {
+                        event.currentTarget.src = FALLBACK_IMAGE;
+                      }}
+                      className="h-full w-full object-cover"
+                    />
                   </button>
                 ))}
               </div>
