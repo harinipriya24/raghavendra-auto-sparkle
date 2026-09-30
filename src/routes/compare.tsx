@@ -1,6 +1,7 @@
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { X, Phone, MessageCircle, Trophy } from "lucide-react";
+import { X, Phone, MessageCircle, Trophy, GitCompareArrows } from "lucide-react";
 import { FALLBACK_IMAGE, vehiclesByIdsQuery, vehicleImages } from "@/lib/catalog";
 import { formatINR, PHONE_TEL, WHATSAPP_URL } from "@/lib/site";
 import { useCompare } from "@/hooks/useCompare";
@@ -42,7 +43,13 @@ function ComparePage() {
   const { data: vehicles = [] } = useQuery(vehiclesByIdsQuery(ids));
   const ordered = ids.map((id) => vehicles.find((v) => v.id === id)).filter(Boolean) as typeof vehicles;
 
-  const best = ordered.length >= 2 ? pickBest(ordered) : null;
+  const [showResult, setShowResult] = useState(false);
+  const compareKey = ids.join(",");
+  useEffect(() => {
+    setShowResult(false);
+  }, [compareKey]);
+
+  const best = showResult && ordered.length >= 2 ? pickBest(ordered) : null;
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-14">
