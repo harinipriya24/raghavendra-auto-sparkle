@@ -41,8 +41,8 @@ const vehiclePhotos: Record<string, string> = {
   "Maruti Suzuki WagonR CNG": marutiWagonR,
 };
 
-export const vehicleImages = (v: Pick<Vehicle, "images" | "name">) => {
-  const vehiclePhoto = vehiclePhotos[v.name];
+export const vehicleImages = (v: Pick<Vehicle, "images"> & Partial<Pick<Vehicle, "name">>) => {
+  const vehiclePhoto = v.name ? vehiclePhotos[v.name] : undefined;
   if (vehiclePhoto) return [vehiclePhoto];
 
   return v.images && v.images.length > 0
