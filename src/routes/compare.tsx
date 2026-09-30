@@ -82,6 +82,27 @@ function ComparePage() {
         </div>
       ) : (
         <>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <button
+              onClick={() => setShowResult(true)}
+              disabled={ordered.length < 2}
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-50"
+            >
+              <GitCompareArrows className="h-4 w-4" />
+              Compare now
+            </button>
+            {ordered.length < 2 && (
+              <span className="text-xs text-muted-foreground">
+                Add at least 2 vehicles to see the best pick.
+              </span>
+            )}
+            {showResult && best && (
+              <span className="text-xs text-muted-foreground">
+                The best pick is highlighted below.
+              </span>
+            )}
+          </div>
+
           {best && (
             <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-primary/40 bg-primary/5 p-6 sm:flex-row sm:items-center">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
