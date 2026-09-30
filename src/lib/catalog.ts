@@ -6,6 +6,12 @@ import bajajAuto from "@/assets/bajaj-auto-rickshaw.jpg";
 import piaggioAuto from "@/assets/piaggio-auto-rickshaw.jpg";
 import electricAuto from "@/assets/electric-auto-rickshaw.jpg";
 import tvsAuto from "@/assets/tvs-auto-rickshaw.jpg";
+import marutiSwift from "@/assets/maruti-swift-vxi.jpg";
+import hyundaiCreta from "@/assets/hyundai-creta-sx.jpg";
+import tataNexon from "@/assets/tata-nexon-ev.jpg";
+import hondaCity from "@/assets/honda-city-zx.jpg";
+import mahindraBolero from "@/assets/mahindra-bolero.jpg";
+import marutiWagonR from "@/assets/maruti-wagonr-cng.jpg";
 
 export type Vehicle = Database["public"]["Tables"]["vehicles"]["Row"];
 export type Review = Database["public"]["Tables"]["reviews"]["Row"];
@@ -26,10 +32,23 @@ const replacementImages: Record<string, string> = {
     tvsAuto,
 };
 
-export const vehicleImages = (v: Pick<Vehicle, "images">) =>
-  v.images && v.images.length > 0
+const vehiclePhotos: Record<string, string> = {
+  "Maruti Suzuki Swift VXi": marutiSwift,
+  "Hyundai Creta SX": hyundaiCreta,
+  "Tata Nexon EV": tataNexon,
+  "Honda City ZX": hondaCity,
+  "Mahindra Bolero": mahindraBolero,
+  "Maruti Suzuki WagonR CNG": marutiWagonR,
+};
+
+export const vehicleImages = (v: Pick<Vehicle, "images" | "name">) => {
+  const vehiclePhoto = vehiclePhotos[v.name];
+  if (vehiclePhoto) return [vehiclePhoto];
+
+  return v.images && v.images.length > 0
     ? v.images.map((image) => replacementImages[image] ?? image)
     : [FALLBACK_IMAGE];
+};
 
 export const vehiclesQuery = (category?: VehicleCategory) =>
   queryOptions({
