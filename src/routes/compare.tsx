@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { X, Phone, MessageCircle } from "lucide-react";
+import { X, Phone, MessageCircle, Trophy } from "lucide-react";
 import { FALLBACK_IMAGE, vehiclesByIdsQuery, vehicleImages } from "@/lib/catalog";
 import { formatINR, PHONE_TEL, WHATSAPP_URL } from "@/lib/site";
 import { useCompare } from "@/hooks/useCompare";
@@ -42,6 +42,8 @@ function ComparePage() {
   const { data: vehicles = [] } = useQuery(vehiclesByIdsQuery(ids));
   const ordered = ids.map((id) => vehicles.find((v) => v.id === id)).filter(Boolean) as typeof vehicles;
 
+  const best = ordered.length >= 2 ? pickBest(ordered) : null;
+
   return (
     <section className="mx-auto max-w-7xl px-6 py-14">
       <div className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
@@ -73,6 +75,25 @@ function ComparePage() {
         </div>
       ) : (
         <>
+          {best && (
+            <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-primary/40 bg-primary/5 p-6 sm:flex-row sm:items-center">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <Trophy className="h-6 w-6" />
+              </div>
+              <div className="flex-1">
+                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Our best pick</div>
+                <Link to="/vehicles/$vehicleId" params={{ vehicleId: best.v.id }} className="mt-1 block text-xl font-bold hover:underline">
+                  {best.v.name} — {formatINR(best.v.price)}
+                </Link>
+                <ul className="mt-2 flex flex-wrap gap-2 text-xs text-muted-foreground">
+                  {best.reasons.map((r) => (
+                    <li key={r} className="rounded-full border border-border bg-background px-2.5 py-0.5">{r}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
           <div className="mt-8 overflow-x-auto rounded-2xl border border-border bg-card">
             <table className="w-full min-w-[640px] text-sm">
               <thead>
@@ -81,7 +102,7 @@ function ComparePage() {
                     Vehicle
                   </th>
                   {ordered.map((v) => (
-                    <th key={v.id} className="p-4 text-left align-top">
+                    <th key={v.id} className={`p-4 text-left align-top ${best?.v.id === v.id ? "bg-primary/5" : ""}`}>
                       <div className="relative">
                         <button
                           onClick={() => remove(v.id)}
@@ -101,6 +122,11 @@ function ComparePage() {
                           }}
                           className="aspect-[4/3] w-40 rounded-lg object-cover"
                         />
+                        {best?.v.id === v.id && (
+                          <span className="mt-3 inline-flex items-center gap-1 rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary-foreground">
+                            <Trophy className="h-3 w-3" /> Best pick
+                          </span>
+                        )}
                         <Link
                           to="/vehicles/$vehicleId"
                           params={{ vehicleId: v.id }}
@@ -156,4 +182,35 @@ function ComparePage() {
       )}
     </section>
   );
+}
+
+type V = import("@/lib/catalog").Vehicle;
+
+/** Scores vehicles on availability, value, seating, fuel economy and options. */
+function pickBest(list: V[]) {
+  const prices = list.map((v) => v.price);
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+  const maxSeat = Math.max(...list.map((v) => v.seating));
+  const scored = list.map((v) => {
+    const reasons: string[] = [];
+    let score = 0;
+    if (v.in_stock) { score += 30; reasons.push("In stock now"); }
+    const value = max === min ? 1 : (max - v.price) / (max - min);
+    score += value * 30;
+    if (v.price === min) reasons.push("Lowest price");
+    score += (v.seating / maxSeat) * 15;
+    if (v.seating === maxSeat) reasons.push("Most seating");
+    const fuel = v.fuel.toLowerCase();
+    if (fuel.includes("electric")) { score += 15; reasons.push("Lowest running cost (Electric)"); }
+    else if (fuel.includes("cng")) { score += 12; reasons.push("Economical CNG"); }
+    else if (fuel.includes("diesel")) score += 6;
+    score += Math.min(v.colors.length, 5);
+    if (v.featured) score += 4;
+    return { v, score, reasons };
+  });
+  scored.sort((a, b) => b.score - a.score);
+  const top = scored[0]!;
+  if (top.reasons.length === 0) top.reasons.push("Best overall balance of price and features");
+  return top;
 }

@@ -12,7 +12,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { FALLBACK_IMAGE, vehicleQuery, vehicleImages } from "@/lib/catalog";
-import { formatINR, PHONE_TEL, WHATSAPP_URL } from "@/lib/site";
+import { formatINR, PHONE_TEL, swatchFor, whatsappFor } from "@/lib/site";
 import { EmiCalculator } from "@/components/EmiCalculator";
 import { EnquiryForm } from "@/components/EnquiryForm";
 import { useCompare } from "@/hooks/useCompare";
@@ -43,6 +43,7 @@ function VehicleDetails() {
   const { data: v, isLoading } = useQuery(vehicleQuery(vehicleId));
   const { ids, toggle, isFull } = useCompare();
   const [active, setActive] = useState(0);
+  const [colour, setColour] = useState<string | null>(null);
 
   if (isLoading) {
     return (
@@ -191,16 +192,24 @@ function VehicleDetails() {
             {v.colors.length > 0 && (
               <div className="mt-6">
                 <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                  Available colours
+                  Choose colour{colour ? <span className="ml-1 normal-case text-foreground">· {colour}</span> : null}
                 </div>
                 <div className="mt-2 flex flex-wrap gap-1.5">
                   {v.colors.map((c) => (
-                    <span
+                    <button
+                      type="button"
                       key={c}
-                      className="rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground"
+                      onClick={() => setColour(colour === c ? null : c)}
+                      aria-pressed={colour === c}
+                      className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs transition ${
+                        colour === c
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border bg-card text-muted-foreground hover:bg-secondary"
+                      }`}
                     >
+                      <span className="h-3.5 w-3.5 rounded-full border border-border" style={{ backgroundColor: swatchFor(c) }} />
                       {c}
-                    </span>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -214,7 +223,7 @@ function VehicleDetails() {
                 <Phone className="h-4 w-4" /> Call Now
               </a>
               <a
-                href={WHATSAPP_URL}
+                href={whatsappFor(`Hi, I am interested in ${v.name}${colour ? ` (${colour})` : ""}.`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-1.5 rounded-full bg-emerald-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-600"

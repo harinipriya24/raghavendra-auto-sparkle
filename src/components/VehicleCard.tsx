@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   Phone,
@@ -7,7 +8,7 @@ import {
   ArrowRight,
   GitCompareArrows,
 } from "lucide-react";
-import { formatINR, PHONE_TEL, WHATSAPP_URL } from "@/lib/site";
+import { formatINR, PHONE_TEL, swatchFor, whatsappFor } from "@/lib/site";
 import { FALLBACK_IMAGE, vehicleImages, type Vehicle } from "@/lib/catalog";
 import { useCompare } from "@/hooks/useCompare";
 
@@ -15,6 +16,7 @@ export function VehicleCard({ v }: { v: Vehicle }) {
   const { ids, toggle, isFull } = useCompare();
   const selected = ids.includes(v.id);
   const image = vehicleImages(v)[0]!;
+  const [colour, setColour] = useState<string | null>(null);
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition hover:-translate-y-0.5 hover:shadow-lg">
@@ -78,16 +80,24 @@ export function VehicleCard({ v }: { v: Vehicle }) {
         {v.colors.length > 0 && (
           <div className="mt-4">
             <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Colours
+              Colours{colour ? <span className="ml-1 normal-case text-foreground">· {colour}</span> : null}
             </div>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {v.colors.map((c) => (
-                <span
+                <button
+                  type="button"
                   key={c}
-                  className="rounded-full border border-border bg-background px-2.5 py-0.5 text-xs text-muted-foreground"
+                  onClick={() => setColour(colour === c ? null : c)}
+                  aria-pressed={colour === c}
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs transition ${
+                    colour === c
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-border bg-background text-muted-foreground hover:bg-secondary"
+                  }`}
                 >
+                  <span className="h-3 w-3 rounded-full border border-border" style={{ backgroundColor: swatchFor(c) }} />
                   {c}
-                </span>
+                </button>
               ))}
             </div>
           </div>
@@ -102,7 +112,7 @@ export function VehicleCard({ v }: { v: Vehicle }) {
               <Phone className="h-3.5 w-3.5" /> Call
             </a>
             <a
-              href={WHATSAPP_URL}
+              href={whatsappFor(`Hi, I am interested in ${v.name}${colour ? ` (${colour})` : ""}.`)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-1.5 rounded-full bg-emerald-500 px-3 py-2.5 text-xs font-semibold text-white transition hover:bg-emerald-600"
