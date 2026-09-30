@@ -36,6 +36,13 @@ export function VehicleCard({ v }: { v: Vehicle }) {
           }}
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
+        {colour && (
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 mix-blend-color"
+            style={{ backgroundColor: swatchFor(colour), opacity: 0.75 }}
+          />
+        )}
         <div className="absolute left-3 top-3 flex flex-col gap-2">
           {v.in_stock ? (
             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/95 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">
