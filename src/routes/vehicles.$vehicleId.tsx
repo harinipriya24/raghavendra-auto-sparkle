@@ -115,7 +115,7 @@ function VehicleDetails() {
                 <div
                   aria-hidden
                   className="pointer-events-none absolute inset-0 mix-blend-color"
-                  style={{ backgroundColor: swatchFor(colour), opacity: 0.75 }}
+                  style={{ backgroundColor: swatchFor(colour), opacity: 0.45 }}
                 />
               )}
               {images.length > 1 && (
