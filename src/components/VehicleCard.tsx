@@ -40,7 +40,7 @@ export function VehicleCard({ v }: { v: Vehicle }) {
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 mix-blend-color"
-            style={{ backgroundColor: swatchFor(colour), opacity: 0.75 }}
+            style={{ backgroundColor: swatchFor(colour), opacity: 0.45 }}
           />
         )}
         <div className="absolute left-3 top-3 flex flex-col gap-2">
