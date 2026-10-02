@@ -68,6 +68,7 @@ export const vehiclesQuery = (category?: VehicleCategory) =>
 export const vehicleQuery = (id: string) =>
   queryOptions({
     queryKey: ["vehicle", id],
+    enabled: Boolean(id),
     queryFn: async () => {
       const { data, error } = await supabase.from("vehicles").select("*").eq("id", id).maybeSingle();
       if (error) throw error;

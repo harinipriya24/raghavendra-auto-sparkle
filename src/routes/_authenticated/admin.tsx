@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { LogOut, Car, Inbox, Star, ExternalLink, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -29,6 +29,7 @@ const tabs = [
 
 function AdminLayout() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { data: isAdmin, isLoading } = useQuery({
     queryKey: ["is-admin"],
     queryFn: async () => {
@@ -47,8 +48,10 @@ function AdminLayout() {
   });
 
   const signOut = async () => {
+    await queryClient.cancelQueries();
+    queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth" });
+    navigate({ to: "/auth", replace: true });
   };
 
   if (isLoading) {
