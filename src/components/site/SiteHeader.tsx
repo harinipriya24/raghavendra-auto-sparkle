@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Phone, Menu, X, GitCompareArrows } from "lucide-react";
 import { PHONE_TEL } from "@/lib/site";
 import { useCompare } from "@/hooks/useCompare";
+import ownerLogo from "@/assets/owner-logo.jpg.asset.json";
 
 const links = [
   { to: "/", label: "Home" },
@@ -19,10 +20,12 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary font-bold text-primary-foreground">
-            R
-          </div>
+        <Link to="/" className="flex items-center gap-2.5">
+          <img
+            src={ownerLogo.url}
+            alt="Raghavendra Auto Finance"
+            className="h-10 w-10 rounded-full border border-border object-cover object-top shadow-sm"
+          />
           <div className="leading-tight">
             <div className="text-sm font-bold tracking-tight">RAGHAVENDRA</div>
             <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
