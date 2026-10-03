@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Phone, Menu, X, GitCompareArrows } from "lucide-react";
 import { PHONE_TEL } from "@/lib/site";
 import { useCompare } from "@/hooks/useCompare";
+import ownerLogo from "@/assets/owner-logo.jpg.asset.json";
 
 const links = [
   { to: "/", label: "Home" },
