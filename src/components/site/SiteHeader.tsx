@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Phone, Menu, X, GitCompareArrows } from "lucide-react";
 import { PHONE_TEL } from "@/lib/site";
 import { useCompare } from "@/hooks/useCompare";
-import ownerLogo from "@/assets/owner-logo.jpg.asset.json";
+const ownerLogo = "/owner-logo.jpg";
 
 const links = [
   { to: "/", label: "Home" },
@@ -22,7 +22,7 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-center gap-2.5">
           <img
-            src={ownerLogo.url}
+            src={ownerLogo}
             alt="Raghavendra Auto Finance"
             className="h-10 w-10 rounded-full border border-border object-cover object-top shadow-sm"
           />
